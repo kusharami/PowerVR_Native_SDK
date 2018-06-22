@@ -40,7 +40,7 @@ public:
 	/// <param name="dist">The signed distance, along the plane's normal direction, between the coordinate start and
 	/// (0,0,0). This number is defined as the number that the normal must be multiplied with so that the normal's
 	/// coordinates define a point on the plane.</param>
-	void set(const glm::vec3& normal, float32 dist) { set(normal, dist); }
+	//void set(const glm::vec3& normal, float32 dist) { set(normal, dist); }
 
 	/// <summary>Sets a plane from normal and a point on this plane.</summary>
 	/// <param name="normal">The normal of this plane. If it is not normalized, unexpected results may occur.</param>
