@@ -16,6 +16,7 @@ class AssetWriter
 public:
 	/// <summary>Default constructor.</summary>
 	AssetWriter() : _assetStream(NULL) {}
+	virtual ~AssetWriter() {}
 
 public:
 	/// <summary>Open an asset stream for writing. Implement this in your concrete AssetWriter implementation.
