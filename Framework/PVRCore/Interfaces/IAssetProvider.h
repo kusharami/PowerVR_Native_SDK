@@ -16,6 +16,7 @@ class Stream;
 class IAssetProvider
 {
 public:
+	virtual ~IAssetProvider() {}
 	/// <summary>Create a Stream from the provided filename. The actual source of the stream is abstracted (filesystem,
 	/// resources etc.).</summary>
 	/// <param name="filename">The name of the asset. May contain a path or not. Platform-specific paths and built-in

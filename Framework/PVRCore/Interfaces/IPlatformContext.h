@@ -207,6 +207,7 @@ class ISharedPlatformContext
 protected:
 	platform::PlatformContext* _parentContext;
 public:
+	virtual ~ISharedPlatformContext() {}
 	virtual bool makeSharedContextCurrent() = 0;
 	platform::PlatformContext& getParentContext() { return *_parentContext; }
 	virtual platform::NativeSharedPlatformHandles_& getSharedHandles() = 0;

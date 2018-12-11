@@ -717,6 +717,7 @@ public:
 	virtual ISharedPlatformContext& getSharedPlatformContext() = 0;
 	GraphicsContext getGraphicsContext() { return _context; }
 	virtual api::TextureAndFence uploadTextureDeferred(const ::pvr::Texture& texture, bool allowDecompress = true) = 0;
+	virtual ~ISharedContext() {}
 	//virtual api::TextureAndFence createGraphicsPipelineDeferred() = 0;
 
 };
