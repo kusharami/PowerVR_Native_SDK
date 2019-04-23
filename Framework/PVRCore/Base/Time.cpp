@@ -22,18 +22,20 @@
 #ifdef _POSIX_MONOTONIC_CLOCK
 #define PVR_TIMER_CLOCK CLOCK_MONOTONIC
 #else
-#define PVR_TIMER_CLOCK  CLOCK_REALTIME
+#define PVR_TIMER_CLOCK CLOCK_REALTIME
 #endif
 #endif
 
 #include "PVRCore/Base/Time_.h"
 #include <ctime>
 
-namespace pvr {
+namespace pvr
+{
 Time::Time()
 {
 #if defined(_WIN32)
-	_highResolutionSupported = QueryPerformanceFrequency((LARGE_INTEGER*)&_timerFrequency) != 0;
+	_highResolutionSupported =
+		QueryPerformanceFrequency((LARGE_INTEGER *) &_timerFrequency) != 0;
 	if (!_highResolutionSupported)
 	{
 		// This is a rough estimate of GetTickCount64's frequency which is supposed to be sampled once between every 10-16ms, but there's no obvious way to query what the actual frequency is.
@@ -43,7 +45,8 @@ Time::Time()
 #elif defined(__APPLE__)
 	_timeBaseInfo = new mach_timebase_info_data_t;
 	mach_timebase_info(_timeBaseInfo);
-	_timerFrequency = (uint64)((1.0e9 * (float64)_timeBaseInfo->numer) / (float64)_timeBaseInfo->denom);
+	_timerFrequency = (uint64)((1.0e9 * (float64) _timeBaseInfo->numer) /
+		(float64) _timeBaseInfo->denom);
 #elif !defined(__QNX__)
 	timespec timerInfo;
 	if (clock_getres(PVR_TIMER_CLOCK, &timerInfo) != 0)
@@ -69,7 +72,7 @@ void Time::Reset()
 	_startTime = getCurrentTimeNanoSecs();
 }
 
-uint64	Time::getElapsedNanoSecs()
+uint64 Time::getElapsedNanoSecs()
 {
 	return getCurrentTimeNanoSecs() - _startTime;
 }
@@ -103,7 +106,7 @@ uint64 Time::getElapsedHours()
 static inline uint64 helperQueryPerformanceCounter()
 {
 	uint64 lastTime;
-	QueryPerformanceCounter((LARGE_INTEGER*)&lastTime);
+	QueryPerformanceCounter((LARGE_INTEGER *) &lastTime);
 	return lastTime;
 }
 #endif
@@ -115,27 +118,30 @@ uint64 Time::getCurrentTimeNanoSecs() const
 	static uint64 initialTime = helperQueryPerformanceCounter();
 	if (_highResolutionSupported)
 	{
-		QueryPerformanceCounter((LARGE_INTEGER*)&currentTime);
-		currentTime = (1000000000 * (currentTime - initialTime)) / _timerFrequency;
-	}
-	else
+		QueryPerformanceCounter((LARGE_INTEGER *) &currentTime);
+		currentTime =
+			(1000000000 * (currentTime - initialTime)) / _timerFrequency;
+	} else
 	{
-		currentTime = static_cast<uint64>(GetTickCount64() * 1000000ull);
+		currentTime = static_cast<uint64>(GetTickCount() * 1000000ull);
 	}
 
 #elif defined(__APPLE__)
 	uint64_t time = mach_absolute_time();
-	currentTime = static_cast<uint64>(time * (_timeBaseInfo->numer / _timeBaseInfo->denom));
+	currentTime = static_cast<uint64>(
+		time * (_timeBaseInfo->numer / _timeBaseInfo->denom));
 #elif defined(__QNX__)
 	timeval tv;
-	gettimeofday(&tv,NULL);
-	currentTime =(uint64)((tv.tv_sec*(unsigned long)1000) + (tv.tv_usec/1000.0)) * 1000000;
+	gettimeofday(&tv, NULL);
+	currentTime =
+		(uint64)((tv.tv_sec * (unsigned long) 1000) + (tv.tv_usec / 1000.0)) *
+		1000000;
 #else
 	timespec time;
 	clock_gettime(PVR_TIMER_CLOCK, &time);
 	currentTime = static_cast<uint64>(time.tv_nsec) +
-	              // convert seconds to ns and add
-	              1e9 * static_cast<uint64>(time.tv_sec);
+		// convert seconds to ns and add
+		1e9 * static_cast<uint64>(time.tv_sec);
 #endif
 
 	return currentTime;
@@ -159,10 +165,9 @@ uint64 Time::getCurrentTimeSecs() const
 	if (_highResolutionSupported)
 	{
 		uint64 currentTime;
-		QueryPerformanceCounter((LARGE_INTEGER*)&currentTime);
+		QueryPerformanceCounter((LARGE_INTEGER *) &currentTime);
 		retTime = static_cast<float64>(_timerFrequency);
-	}
-	else
+	} else
 	{
 		retTime = (float64)(GetTickCount64()) / 1000.;
 	}
@@ -173,7 +178,8 @@ uint64 Time::getCurrentTimeSecs() const
 #elif defined(__QNX__)
 	static uint64 initialTime = clock();
 	uint64 currentTime = std::clock();
-	retTime = static_cast<float64>((currentTime - initialTime)) / CLOCKS_PER_SEC;
+	retTime =
+		static_cast<float64>((currentTime - initialTime)) / CLOCKS_PER_SEC;
 #else
 	timespec time;
 	clock_gettime(PVR_TIMER_CLOCK, &time);

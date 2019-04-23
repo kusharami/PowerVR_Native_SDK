@@ -403,7 +403,7 @@ public:
 		}
 		else
 		{
-			_header.flags &= !Header::PremultipliedFlag;
+			_header.flags &= ~Header::PremultipliedFlag;
 		}
 	}
 

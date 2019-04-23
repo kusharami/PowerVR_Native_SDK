@@ -50,7 +50,7 @@ void* GetLibFunction(LIBTYPE hLib, const char* pszName)
 #if defined(UNDER_CE)
 		return GetProcAddressA(hLib, pszName);
 #else
-		return GetProcAddress(hLib, pszName);
+		return (void*) GetProcAddress(hLib, pszName);
 #endif
 	}
 	return NULL;
@@ -176,7 +176,7 @@ namespace pvr {
 namespace native {
 
 NativeLibrary::NativeLibrary(const std::string& LibPath, pvr::Logger::Severity errorSeverity)
-	: _hostLib(0), _bError(false), errorSeverity(errorSeverity)
+	: errorSeverity(errorSeverity), _hostLib(0), _bError(false)
 {
 	size_t start = 0;
 	std::string tmp;

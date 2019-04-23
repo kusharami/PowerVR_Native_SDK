@@ -1961,7 +1961,7 @@ bool PfxReader::parseSemantic(EffectSemantic& semantic, int32 nStartLine, string
 
 		// default value
 		int32 i;
-		for (i = 0; i < (uint32)SemanticDataType::Count; i++)
+		for (i = 0; i < (int32)SemanticDataType::Count; i++)
 		{
 			const EffectSemanticDefaultDataTypeInfo& sDfltType =
 			  EffectSemanticDefaultDataTypeInfo::getSemanticDefaultTypeInfo(SemanticDataType(i));
@@ -1978,7 +1978,7 @@ bool PfxReader::parseSemantic(EffectSemantic& semantic, int32 nStartLine, string
 		}
 
 		// invalid data type
-		if (i == (uint32)SemanticDataType::Count)
+		if (i == (int32)SemanticDataType::Count)
 		{
 			returnError = strings::createFormatted("'%s' unknown on line %d.\n", pszString, _context->fileLineNumbers[nStartLine]);
 			return false;
