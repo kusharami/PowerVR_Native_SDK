@@ -389,7 +389,7 @@ public:
 		}
 		else
 		{
-			_header.flags &= !Header::CompressedFlag;
+			_header.flags &= ~Header::CompressedFlag;
 		}
 	}
 
